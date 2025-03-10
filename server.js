@@ -9,7 +9,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Dynamic route to serve HTML files based on title name
 app.get('/:title', (req, res) => {
     const title = req.params.title;
-    res.sendFile(path.join(__dirname, 'public', `${title}.html`));
+    const filePath = path.join(__dirname, 'public', `${title}.html`);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            res.status(404).send('File not found');
+        }
+    });
 });
 
 app.listen(port, () => {
